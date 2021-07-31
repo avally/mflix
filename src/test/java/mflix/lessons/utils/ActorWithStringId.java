@@ -7,59 +7,62 @@ import java.util.Date;
 import java.util.List;
 
 public class ActorWithStringId {
-  private String id;
+    @BsonProperty("_id")
+    private String id;
 
-  private String name;
-  private Date dateOfBirth;
+    private String name;
+    @BsonProperty("date_of_birth")
+    private Date dateOfBirth;
 
-  private List awards;
-  private int numMovies;
+    private List awards;
+    @BsonProperty("num_movies")
+    private int numMovies;
 
-  public ActorWithStringId() { // constructor
-  }
+    public ActorWithStringId() { // constructor
+    }
 
-  public String getName() {
-    return name;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public Date getDateOfBirth() {
-    return dateOfBirth;
-  }
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
 
-  public void setDateOfBirth(Date dateOfBirth) {
-    this.dateOfBirth = dateOfBirth;
-  }
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
 
-  public List getAwards() {
-    return awards;
-  }
+    public List getAwards() {
+        return awards;
+    }
 
-  public void setAwards(List awards) {
-    this.awards = awards;
-  }
+    public void setAwards(List awards) {
+        this.awards = awards;
+    }
 
-  public int getNumMovies() {
-    return numMovies;
-  }
+    public int getNumMovies() {
+        return numMovies;
+    }
 
-  public void setNumMovies(int numMovies) {
-    this.numMovies = numMovies;
-  }
+    public void setNumMovies(int numMovies) {
+        this.numMovies = numMovies;
+    }
 
-  public String getId() {
-    return id;
-  }
+    public String getId() {
+        return id;
+    }
 
-  public void setId(String id) {
-    this.id = id;
-  }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-  public ActorWithStringId withNewId() {
-    setId(new ObjectId().toHexString());
-    return this;
-  }
+    public ActorWithStringId withNewId() {
+        setId(new ObjectId().toHexString());
+        return this;
+    }
 }
