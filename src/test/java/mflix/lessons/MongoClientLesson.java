@@ -29,7 +29,7 @@ public class MongoClientLesson extends AbstractLesson {
 
   private MongoCollection<Document> collection;
 
-  private String uri = "<YOUR SRV STRING from the application.properties file>";
+  private String uri = "mongodb+srv://m220student:m220password@mflix.dxviw.mongodb.net";
 
   private Document document;
 
@@ -77,7 +77,7 @@ public class MongoClientLesson extends AbstractLesson {
     MongoClientSettings clientSettings =
         MongoClientSettings.builder()
             .applyConnectionString(connectionString)
-            .applicationName("mflix")
+            .applicationName("sample_mflix")
             .applyToConnectionPoolSettings(
                 builder -> builder.maxWaitTime(1000, TimeUnit.MILLISECONDS))
             .build();
@@ -121,7 +121,7 @@ public class MongoClientLesson extends AbstractLesson {
     you need to go over the contents more than once.
      */
 
-    Assert.assertTrue(dbnames.contains("mflix"));
+    Assert.assertTrue(dbnames.contains("sample_mflix"));
 
     /*
     Then we have our MongoDatabase object. We will use this object to
@@ -129,7 +129,7 @@ public class MongoClientLesson extends AbstractLesson {
     database level read preferences, read concerns and write concerns.
      */
 
-    database = mongoClient.getDatabase("mflix");
+    database = mongoClient.getDatabase("sample_mflix");
 
     ReadPreference readPreference = database.getReadPreference();
 
@@ -154,7 +154,7 @@ public class MongoClientLesson extends AbstractLesson {
      */
 
     mongoClient = MongoClients.create(uri);
-    database = mongoClient.getDatabase("mflix");
+    database = mongoClient.getDatabase("sample_mflix");
     collection = database.getCollection("movies");
 
     /*
