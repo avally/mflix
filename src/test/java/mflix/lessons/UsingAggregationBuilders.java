@@ -1,6 +1,7 @@
 package mflix.lessons;
 
 import com.mongodb.client.AggregateIterable;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.*;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -9,6 +10,7 @@ import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -215,7 +217,9 @@ public class UsingAggregationBuilders extends AbstractLesson {
     Running both pipelines, the same set of results.
      */
 
-    Assert.assertEquals(groupByResults, sortByCountResults);
+//    Assert.assertEquals(groupByResults, sortByCountResults);
+    Assert.assertTrue(groupByResults.size() == sortByCountResults.size() &&
+            groupByResults.containsAll(sortByCountResults) && sortByCountResults.containsAll(groupByResults));
   }
 
   @Test
