@@ -1,11 +1,15 @@
 package mflix.api.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.bson.types.ObjectId;
 
 import java.util.Map;
 
 public class User {
 
+    @JsonProperty("_id")
+    private ObjectId id;
     private String name;
     private String email;
     @JsonIgnore
@@ -17,6 +21,14 @@ public class User {
 
     public User() {
         super();
+    }
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
     }
 
     public String getName() {
