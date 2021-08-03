@@ -62,7 +62,13 @@ public class UserDao extends AbstractMFlixDao {
      */
     public boolean addUser(User user) {
         //TODO > Ticket: Durable Writes -  you might want to use a more durable write concern here!
-        usersCollection.insertOne(user);
+        Document queryFilter = new Document("email", user.getEmail());
+        UpdateOptions options = new UpdateOptions().upsert(true);
+        long matchedCount = usersCollection.withWriteConcern(WriteConcern.W2)
+                .updateOne(queryFilter, new Document("$setOnInsert", user), options).getMatchedCount();
+        if (matchedCount != 0) {
+            throw new IncorrectDaoOperation("User " + user.getEmail() + " has already exists");
+        }
         return true;
         //TODO > Ticket: Handling Errors - make sure to only add new users
         // and not users that already exist.
@@ -80,7 +86,8 @@ public class UserDao extends AbstractMFlixDao {
         Session session = new Session();
         session.setUserId(userId);
         session.setJwt(jwt);
-        return sessionsCollection.insertOne(session).wasAcknowledged();
+        return sessionsCollection.updateOne(new Document("user_id", userId), new Document("$set", session),
+                new UpdateOptions().upsert(true)).wasAcknowledged();
         //TODO> Ticket: User Management - implement the method that allows session information to be
         // stored in it's designated collection.
         //TODO > Ticket: Handling Errors - implement a safeguard against
@@ -143,8 +150,11 @@ public class UserDao extends AbstractMFlixDao {
     public boolean updateUserPreferences(String email, Map<String, ?> userPreferences) {
         //TODO> Ticket: User Preferences - implement the method that allows for user preferences to
         // be updated.
+        if (userPreferences == null) {
+            throw new IncorrectDaoOperation("User preferences must not be null!");
+        }
+        return usersCollection.updateOne(new Document("email", email), Updates.set("preferences", userPreferences)).wasAcknowledged();
         //TODO > Ticket: Handling Errors - make this method more robust by
         // handling potential exceptions when updating an entry.
-        return false;
     }
 }
