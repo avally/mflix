@@ -67,6 +67,17 @@ public class MovieDao extends AbstractMFlixDao {
         pipeline.add(match);
         // TODO> Ticket: Get Comments - implement the lookup stage that allows the comments to
         // retrieved with Movies.
+
+        List<Variable<String>> let = List.of(new Variable<>("movieid", "$_id"));
+        List<Bson> lookupPipe = new ArrayList<>();
+        Bson exprMatch = Aggregates.match(Document.parse("{'$expr': {'$eq': ['$movie_id', '$$movieid']}}"));
+        Bson lookupSort = Aggregates.sort(Sorts.descending("date"));
+        lookupPipe.add(exprMatch);
+        lookupPipe.add(lookupSort);
+
+        Bson lookup = Aggregates.lookup("comments", let, lookupPipe, "comments");
+
+        pipeline.add(lookup);
         Document movie = moviesCollection.aggregate(pipeline).first();
 
         return movie;
@@ -197,7 +208,7 @@ public class MovieDao extends AbstractMFlixDao {
         // TODO > Ticket: Paging - implement the necessary cursor methods to support simple
         // pagination like skip and limit in the code below
         moviesCollection.find(castFilter).sort(sort).skip(skip).limit(limit).iterator()
-        .forEachRemaining(movies::add);
+                .forEachRemaining(movies::add);
         return movies;
     }
 
