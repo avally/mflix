@@ -133,6 +133,8 @@ public class CommentDao extends AbstractMFlixDao {
      * @return true if successful deletes the comment.
      */
     public boolean deleteComment(String commentId, String email) {
+        return commentCollection.deleteOne(and(eq("email", email), eq("_id", new ObjectId(commentId))))
+                .getDeletedCount() == 1;
         // TODO> Ticket Delete Comments - Implement the method that enables the deletion of a user
         // comment
         // TIP: make sure to match only users that own the given commentId
